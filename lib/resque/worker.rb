@@ -101,9 +101,14 @@ module Resque
     # The default is 5 seconds, but for a semi-active site you may
     # want to use a smaller value.
     #
+    # Can also be passed an integer or float to assign a wait interval after a
+    # job has been performed. This can be used when you have fast-executing jobs
+    # and want to load-balance them more evenly across machines. Defaults to 0.0,
+    # i.e. no wait.
+    #
     # Also accepts a block which will be passed the job as soon as it
     # has completed processing. Useful for testing.
-    def work(interval = 5, &block)
+    def work(interval = 5, wait = 0.0, &block)
       $0 = "resque: Starting"
       startup
 
@@ -127,6 +132,7 @@ module Resque
 
           done_working
           @child = nil
+          sleep wait
         else
           break if interval.to_i == 0
           log! "Sleeping for #{interval.to_i}"

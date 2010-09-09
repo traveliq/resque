@@ -21,7 +21,10 @@ namespace :resque do
 
     worker.log "Starting worker #{worker}"
 
-    worker.work(ENV['INTERVAL'] || 5) # interval, will block
+    worker.work(
+      (ENV['INTERVAL'] || 5), # interval, will block
+      (ENV['RESQUE_WAIT'] || 0.0) # wait after job before polling for next one
+    )
   end
 
   desc "Start multiple Resque workers. Should only be used in dev mode."
