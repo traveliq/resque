@@ -23,7 +23,7 @@ namespace :resque do
 
     worker.work(
       (ENV['INTERVAL'] || 5), # interval, will block
-      (ENV['RESQUE_WAIT'] || 0.0) # wait after job before polling for next one
+      (ENV['RESQUE_WAIT'] || 0.0).to_f # wait after job before polling for next one
     )
   end
 
