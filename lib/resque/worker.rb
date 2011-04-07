@@ -312,6 +312,7 @@ module Resque
       all_workers = Worker.all
       known_workers = worker_pids unless all_workers.empty?
       all_workers.each do |worker|
+        raise "Nil worker ?!: #{all_workers.inspect}" if worker.nil?
         host, pid, queues = worker.id.split(':')
         next unless host == hostname
         next if known_workers.include?(pid)
